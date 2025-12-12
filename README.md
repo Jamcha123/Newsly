@@ -1,7 +1,7 @@
-# Analy
-Analy analyzes a news headline and a list of outcome and finds the most likely outcome.
+# Newsly
+Newsly analyzes a news headline and a list of outcome and finds the most likely outcome.
 
-Analy is a AI tool that analyzes a news headline and a list of potentional outcomes and lists them from least to most likely.
+Newsly is a AI tool that analyzes a news headline and a list of potential outcomes and lists them from least to most likely.
 
 Web Search Engines it uses:
 
@@ -17,4 +17,8 @@ Web Search Engines it uses:
 
 Then OpenAI compiles all the data and lists the outcomes (you inputed) from least to most likely using the search results.
 
-Disclaimer: Analy cannot predict perfectly and should take it as a grain of salt
+Disclaimer:
+    
+    Newsly provides informational content only.
+    Newsly CANNOT predict events with certainty and its outputs may be incorrect or incomplete.
+    Newsly must NOT be used for gambling, betting, or financial decision-making, and Newsly takes NO responsibility for any decisions or losses related to such activities.
