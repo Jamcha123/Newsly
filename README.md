@@ -17,6 +17,11 @@ Web Search Engines it uses:
 
 Then OpenAI compiles all the data and lists the outcomes (you inputed) from least to most likely using the search results.
 
+API Options:
+
+   1. short summaries - $0.05/request
+   2. long summaries - $0.05
+
 Disclaimer:
     
     Newsly provides informational content only.
