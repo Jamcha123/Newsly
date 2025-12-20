@@ -7,25 +7,26 @@ import check from './assets/check.svg'
 import {initializeApp} from 'firebase/app'
 import {initializeAppCheck, ReCaptchaEnterpriseProvider} from 'firebase/app-check'
 import {getAuth, onAuthStateChanged, signInAnonymously} from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, setDoc } from 'firebase/firestore'
 import {getStorage, getBytes, getDownloadURL, ref, uploadBytes, uploadString} from 'firebase/storage'
 
 const config = {
-  apiKey: "AIzaSyDuRpuHYKct4pbKihEsz3az5Iwr-YbiVII",
-  authDomain: "newsly-e41a5.firebaseapp.com",
-  projectId: "newsly-e41a5",
-  storageBucket: "newsly-e41a5.firebasestorage.app",
-  messagingSenderId: "397222684882",
-  appId: "1:397222684882:web:ab322659c221280e4ba50b",
-  measurementId: "G-FKX4KHM44V"
+  apiKey: "AIzaSyAThpvTF06xHxKTod3MLC8uN0fy_B4Y3LE",
+  authDomain: "newsly-2.firebaseapp.com",
+  projectId: "newsly-2",
+  storageBucket: "newsly-2.firebasestorage.app",
+  messagingSenderId: "680724334186",
+  appId: "1:680724334186:web:a02c110036f3ef4ce22c13"
 }
 
 const app = initializeApp(config)
 
-const appcheck = initializeAppCheck(app, {provider: new ReCaptchaEnterpriseProvider("6LfmGCssAAAAAK0dgCl15mhmM7aBuvgY1mNlNyDp")})
+const appcheck = initializeAppCheck(app, {provider: new ReCaptchaEnterpriseProvider("6LcepS8sAAAAAFKruEPVSFQLZ7aUYDvVGUG0q-vZ")})
 
 const auth = getAuth(app)
 auth.useDeviceLanguage()
+
+const db = getFirestore(app)
 
 onAuthStateChanged(auth, (user) => {
   if(user == null){
@@ -34,8 +35,6 @@ onAuthStateChanged(auth, (user) => {
     })
   }
 })
-
-const db = getFirestore(app)
 
 const storage = getStorage(app)
 
@@ -47,15 +46,18 @@ function AddNavbar(){
   return(
     <nav className="fixed top-0 w-full min-h-[7vh] max-h-fit z-99 m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
       <ul className="relative w-full h-[7vh] p-0 bg-gray-900 lg:hidden flex flex-row align-middle justify-center text-center ">
-        <div className="relative w-[25%] h-full m-auto p-0 flex flex-col align-middle justify-center text-center ">
+        <div className="relative w-[40%] h-full m-auto p-0 flex flex-col align-middle justify-center text-center ">
           <div onClick={active? () => setActive(false) : () => setActive(true)} onMouseOut={() => setHover(false)} onMouseOver={() => setHover(true)} className="relative w-[4vh] h-full cursor-pointer hover:scale-[1.1] active:scale-[0.9] transition-all duration-300 m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
             <motion.div initial={{translateX: 0 + "%", rotateZ: 0 + "deg"}} animate={{translateX: hover? 15 + "%": 0 + "%", rotateZ: hover? 0 + "deg" : 0 + "deg" }} transition={{type: "keyframes", duration: 0.1}} className="relative duration-300 transition-all w-full h-[0.5vh] scale-y-[0.9] shadow-sm rounded-xl mb-0 mt-[12%] m-auto p-0 bg-white "></motion.div>
             <motion.div initial={{translateX: 0 + "%", rotateZ: 0 + "deg"}} animate={{translateX: hover? -5 + "%": 0 + "%", rotateZ: hover? 0 + "deg" : 0 + "deg" }} transition={{type: "keyframes", duration: 0.1}} className="relative duration-300 transition-all w-full h-[0.5vh] scale-y-[0.9] shadow-sm rounded-xl mb-0 mt-[12%] m-auto p-0 bg-white "></motion.div>
             <motion.div initial={{translateX: 0 + "%", rotateZ: 0 + "deg"}} animate={{translateX: hover? 15 + "%": 0 + "%", rotateZ: hover? 0 + "deg" : 0 + "deg" }} transition={{type: "keyframes", duration: 0.1}} className="relative duration-300 transition-all w-full h-[0.5vh] scale-y-[0.9] shadow-sm rounded-xl mb-0 mt-[12%] m-auto p-0 bg-white "></motion.div>
           </div>
         </div>
-        <div className="relative w-[75%] h-full m-auto p-0 flex flex-row align-middle justify-end text-end ">
+        <div className="relative w-[60%] h-full m-auto p-0 flex flex-row align-middle justify-end text-end ">
           <h1 className="text-xl text-white flex flex-col align-middle justify-center text-center mr-[5%] ">Newsly - Analyze News</h1>
+          <motion.button className="relative w-[10em] underline underline-offset-2 h-[75%] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center text-xl text-white font-medium ">
+            <a href="/dashboard.html" className="text-violet-300">To The Dashboard</a>
+          </motion.button>
         </div>
       </ul>
       <motion.ul initial={{scaleX: 0}} animate={{scaleX: active? 1 : 0, display: active? "flex" : "none"}} transition={{type: "spring", duration: 1}} className="relative w-full h-[28vh] p-0 bg-transparent lg:hidden flex flex-col align-middle justify-center text-center ">
@@ -79,9 +81,9 @@ function AddNavbar(){
           <li className="text-xl font-medium text-white hover:text-violet-300 m-auto flex flex-col text-center justify-center align-middle underline-offset-2 underline cursor-pointer "><a href="#pricing">Newsly API pricing</a></li>
           <li className="text-xl font-medium text-white hover:text-violet-300 m-auto flex flex-col text-center justify-center align-middle underline-offset-2 underline cursor-pointer "><a href="#contact">Contact Info</a></li>
         </div>
-        <div className="relative w-[25%] h-full m-auto p-0 bg-transparent flex flex-row align-middle justify-evenly text-end ">
-          <h1 className="text-xl text-white flex flex-col align-middle justify-center text-center mr-[5%] ">Newsly - Analyze News</h1>
-        </div>
+        <motion.button className="relative w-[10em] underline underline-offset-2 h-[75%] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center text-xl text-white font-medium ">
+          <a href="/dashboard.html" className="text-violet-300">To The Dashboard</a>
+        </motion.button>
       </ul>
     </nav>
   )
@@ -166,25 +168,25 @@ export default function App(){
             </h1>
             <div className="relative w-full h-fit mt-[10%] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
               <h1 className="text-4xl font-extrabold text-white mt-[0%] ">
-                Analyze News For Reporters, Researchers, <br />
+                Analyzing News For Reporters, Researchers, <br />
                 Marketeers, Hobbyists, Builders Or For Fun
               </h1>
               <p className="text-2xl font-medium text-gray-300 mt-[5%]">
-                Rank possible outcomes based on Likelihood <br />
+                Rank possible outcomes based on Likelihood From <br />
                 Tech, Politics, Economics, Gaming, AI and More News Topics <br />
               </p>
             </div>
           </div>
           <div className="relative w-[50%] h-fit m-auto mt-[5%] mb-0 p-0 bg-transparent flex flex-row justify-center text-center align-middle ">
-            <motion.button initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative font-normal w-[10em] h-[3em] m-auto ml-0 mr-[1%] mb-0 mt-0 p-0 bg-slate-800 border-2 border-white rounded-full cursor-pointer text-xl text-white " >
-              Newsly APIs
+            <motion.button onClick={() => window.location.href = "/dashboard.html"} initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative font-normal w-[10em] h-[3em] m-auto ml-0 mr-[1%] mb-0 mt-0 p-0 bg-slate-800 border-2 border-white rounded-full cursor-pointer text-xl text-white " >
+              <a className="text-violet-300 underline underline-offset-2" href="/dashboard.html">Newsly APIs</a>
             </motion.button>
-            <motion.button initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative font-normal w-[10em] h-[3em] m-auto ml-[1%] mr-0 mb-0 p-0 bg-black border-2 border-white rounded-full cursor-pointer text-xl text-white " >
-              Newsly Login 
+            <motion.button onClick={() => window.location.href = "/login.html"} initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative font-normal w-[10em] h-[3em] m-auto ml-[1%] mr-0 mb-0 p-0 bg-black border-2 border-white rounded-full cursor-pointer text-xl text-white " >
+              <a className="text-violet-300 underline underline-offset-2" href="/login.html">Newsly Login</a>
             </motion.button>
           </div>
         </section>
-        <section id="about" className="relative w-full h-[80vh] m-auto p-0 flex flex-col align-middle ">
+        <section id="about" className="relative w-full h-screen m-auto p-0 flex flex-col align-middle ">
           <h1 className="text-4xl text-white mt-[2%] font-bold ">About Newsly</h1>
           <table className="relative w-[75%] h-[40%] m-auto mb-0 mt-[4%] p-0  ">
             <tbody className="relative w-full h-full m-auto p-0 bg-transparent ">
@@ -210,15 +212,26 @@ export default function App(){
               </tr>
               <tr className="relative w-full h-[20%] m-auto p-0 bg-transparent ">
                 <td className="text-2xl text-white font-extralight ">
-                  Lists People Mentioned In The News
+                  Lists People Mentioned In The News Headline
                 </td>
               </tr>
             </tbody>
           </table>
-          <p className="text-2xl text-gray-300 mt-[5%] font-bold ">
+          <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-evenly text-center">
+            <p className="text-xl text-white mt-[2%] font-medium ">
+              Newsly Free API = Summarizing News Stories
+            </p>
+            <p className="text-xl text-white mt-[2%] font-medium ">
+              Newsly Basic API = Finding Every Person Mentioned
+            </p>
+            <p className="text-xl text-white mt-[2%] font-medium ">
+              Newsly Pro API = Analyzing news and giving a likelihood score on each outcome
+            </p>
+          </div>
+          <p className="text-2xl text-gray-300 mt-[10%] font-bold ">
             Disclaimer: <br />
-            Newsly CANNOT predict events with certainty. <br />
-            Newsly takes NO responsibility for any activities such as betting, gambling or related. <br />
+            Newsly <strong>CANNOT</strong> predict events with certainty. <br />
+            Newsly takes <strong>NO</strong> responsibility for any activities such as betting, gambling or related. <br />
           </p>
         </section>
         <section id="pricing" className="relative w-full lg:w-[90%] min-h-screen max-h-[250vh] m-auto p-0 flex flex-col align-middle gap-2.5 ">
@@ -226,7 +239,7 @@ export default function App(){
             <h1 className="text-4xl text-white font-extrabold ">Newsly API Pricing</h1>
           </div>
           <section className="relative w-full min-h-[60vh] gap-8 max-h-[240vh] m-auto mt-0 mb-0 p-0 bg-transparent flex flex-col lg:flex-row align-middle justify-center text-center">
-            <div className="relative w-[75%] lg:w-[33%] md:w-[50%] min-h-[60vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 from rounded-md border-2 border-orange-400 flex flex-col align-middle ">
+            <div className="relative w-[75%] lg:w-[33%] md:w-[50%] min-h-[70vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 from rounded-md border-2 border-orange-400 flex flex-col align-middle ">
               <div className="relative w-full h-[10vh] m-auto p-0 mt-0 mb-0 flex flex-col align-middle justify-center text-center  ">
                 <h2 className="text-2xl text-white font-medium ">Newsly Free API - Free</h2>
               </div>
@@ -267,14 +280,19 @@ export default function App(){
                 </tbody>
               </table>
               <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
-                <motion.button initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[16em] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-orange-300 ">
+                <motion.button onClick={() => window.location.href = "/dashboard.html"} initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[75%] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-orange-300 ">
                   <a href="">
                     Go To The Newsly Free API 
                   </a>
                 </motion.button>
               </div>
+              <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center">
+                <p className="text-xl text-white font-extralight">
+                  The Free API is for summarizing news stories
+                </p>
+              </div>
             </div>
-            <div className="relative w-[75%] md:w-[50%] lg:w-[33%] min-h-[60vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 rounded-md border-2 border-amber-400 flex flex-col align-middle ">
+            <div className="relative w-[75%] md:w-[50%] lg:w-[33%] min-h-[70vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 rounded-md border-2 border-amber-400 flex flex-col align-middle ">
               <div className="relative w-full h-[10vh] m-auto p-0 mt-0 mb-0 flex flex-col align-middle justify-center text-center  ">
                 <h2 className="text-2xl text-white font-light ">Newsly Basic API - $0.10/requests</h2>
               </div>
@@ -298,7 +316,7 @@ export default function App(){
                   </tr>
                   <tr className="relative w-full h-[25%] m-auto p-0 bg-transparent">
                     <td>
-                      <img src={cross} style={{scale: 1.5}} alt="" />
+                      <img src={check} style={{scale: 1.5}} alt="" />
                     </td>
                     <td className="font-light text-xl text-white ">
                       List People mentioned in the News
@@ -315,14 +333,19 @@ export default function App(){
                 </tbody>
               </table>
               <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
-                <motion.button initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[16em] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-amber-300 ">
+                <motion.button onClick={() => window.location.href = "/dashboard.html"} initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[75%] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-amber-300 ">
                   <a href="">
                     Go To The Newsly Basic API 
                   </a>
                 </motion.button> 
               </div>
+              <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center">
+                <p className="text-xl text-white font-extralight">
+                  The Basic API is for finds every person mentioned in news
+                </p>
+              </div>
             </div>
-            <div className="relative w-[75%] md:w-[50%] lg:w-[33%] min-h-[60vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 rounded-md border-2 border-fuchsia-400 flex flex-col align-middle ">
+            <div className="relative w-[75%] md:w-[50%] lg:w-[33%] min-h-[70vh] m-auto p-0 bg-linear-60 from-slate-950 via-slate-900 to-slate-800 rounded-md border-2 border-fuchsia-400 flex flex-col align-middle ">
               <div className="relative w-full h-[10vh] m-auto p-0 mt-0 mb-0 flex flex-col align-middle justify-center text-center  ">
                 <h2 className="text-2xl text-white font-light ">Newsly Pro API - $0.20/request</h2>
               </div>
@@ -363,11 +386,16 @@ export default function App(){
                 </tbody>
               </table>
               <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center ">
-                <motion.button initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[16em] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-fuchsia-300 ">
+                <motion.button onClick={() => window.location.href = "/dashboard.html"} initial={{scale: 1}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} transition={{type: "spring", duration: 1}} className="relative w-[75%] h-[3em] m-auto p-0 bg-slate-950 text-xl text-slate-200 font-light cursor-pointer rounded-md border-2 border-fuchsia-300 ">
                   <a href="">
                     Go To The Newsly Pro API 
                   </a>
                 </motion.button> 
+              </div>
+              <div className="relative w-full h-[10vh] m-auto p-0 bg-transparent flex flex-col align-middle justify-center text-center">
+                <p className="text-xl text-white font-extralight">
+                  The Pro API is for analyzing news outcome's likelihoods
+                </p>
               </div>
             </div>
           </section>
@@ -382,7 +410,7 @@ export default function App(){
             </p>
           </div>
           <form action="" id="contact_page" method="post" className="relative w-[75%] lg:w-[50%] h-[70%] m-auto p-0 bg-transparent flex flex-col align-middle justify-center gap-10 ">
-            <input type="text" id="ticket_name" required placeholder="Enter Your Tickets Name" className="relative w-full h-[15%] m-auto p-0 bg-slate-950 border-blue-400 border-2 font-medium text-2xl text-center text-white rounded-2xl  " />
+            <input type="text" id="ticket_name" required placeholder="Enter Your Ticket's Name" className="relative w-full h-[15%] m-auto p-0 bg-slate-950 border-blue-400 border-2 font-medium text-2xl text-center text-white rounded-2xl  " />
             <textarea required className="relative w-full h-[70%] rounded-2xl cursor-text m-auto p-0 border-2 border-sky-400 bg-slate-950 text-center text-2xl text-white font-medium " placeholder="Enter Your Message Here For Problems You find" name="message" id="message">
 
             </textarea>
