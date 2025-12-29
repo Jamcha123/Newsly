@@ -1,8 +1,8 @@
 {
-  "name": "newsly.js",
-  "version": "1.0.0",
+  "name": "newslyjs",
+  "version": "1.0.3",
   "type": "module",
-  "description": "newsly.js is an NPM package that ranks polymarket event questions based on likelihood",
+  "description": "NewslyJS analyzes polymarket event questions and gives a likelihood score (0 = not likely, 10 = very likely), price is $1.99/unlimited rankings",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Jamcha123/Newsly/issues"
   },
-  "homepage": "https://github.com/Jamcha123/Newsly#readme"
+  "homepage": "https://newsly.studio",
+  "dependencies": {
+    "axios": "^1.13.2"
+  }
 }

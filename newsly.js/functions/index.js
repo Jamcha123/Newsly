@@ -27,8 +27,12 @@ export const newsly_questions = functions.https.onRequest({cors: true}, async (r
     const link = "https://gamma-api.polymarket.com/events/slug/" + ans
     const {title, description, markets} = (await axios.get(link))["data"]
 
-    const quests = markets.map((e) => ["title: " + title, "description: " + description, "question: " + e["question"], "id: " + e["id"], "volume: " + e["volume"]])
-    return res.status(200).send(quests)
+    const arr = []
+    for(let i = 0; i != markets.length; i++){
+        const obj = {"title": title, "description": description, "question": markets[i]["question"], "id": markets[i]["id"], "volume": markets[i]["volume"]}
+        arr.push(obj)
+    }
+    return res.status(200).send(arr)
 })
 
 export const newsly_searches = functions.https.onRequest({cors: true}, async (req, res) => {
@@ -47,19 +51,19 @@ export const newsly_searches = functions.https.onRequest({cors: true}, async (re
     })
     const perplex_ans = (await perplex_news).results.map((e) => e.title + " - " + e.snippet + " [" + e.url + "]\n")
 
-    return res.status(200).send(["google searches: " + google_ans, "brave searches: " + brave_ans, "perplexity searches: " + perplex_ans])
+    return res.status(200).send({"google": google_ans, "brave": brave_ans, "perplexity": perplex_ans})
 })
 
 export const unlimited_key = functions.https.onRequest({cors: true}, async (req, res) => {
     const {key} = req.query
-    const token = Buffer.concat([Buffer.from(key), Buffer.from(randomBytes(32).toString("hex"))], 2)
+    const token = Buffer.concat([Buffer.from(key, "hex"), Buffer.from(randomBytes(16).toString("hex"), "hex")]).toString("hex")
 
     const storing = (await admin.firestore().collection("paid_npm").doc("usage").get()).get("keys")
     storing.push(token)
 
     await admin.firestore().collection("paid_npm").doc("usage").set({"keys": storing})
 
-    return res.status(200).send("Your Newsly Unlimited Key: " + token + "\n\nDo Not Lose It!!!")
+    return res.status(200).send("Your Newsly Unlimited Key: " + token + "\n//Do Not Lose It!!!")
 })
 
 
@@ -80,7 +84,7 @@ export const newsly_ranking = functions.https.onRequest({cors: true, timeoutSeco
     })
 
     if(active === false){
-        return res.status(200).send(authorization + " is the wrong key\nplease enter the right key\n you can also buy a key here ($1.99): <a href='https://buy.stripe.com/5kQ3cu3YS31t1G00le6kg05'>https://buy.stripe.com/5kQ3cu3YS31t1G00le6kg05</a>")
+        return res.status(200).send(authorization + " is the wrong key\nplease enter the right key\nYou can also buy a key here ($1.99): <a href='https://buy.stripe.com/5kQ3cu3YS31t1G00le6kg05'>https://buy.stripe.com/5kQ3cu3YS31t1G00le6kg05</a>")
     }
 
     let ans = ""
@@ -92,25 +96,24 @@ export const newsly_ranking = functions.https.onRequest({cors: true, timeoutSeco
         ans += polymarket_headline[i].toLowerCase()
     }
 
-    const questions = (await axios.get("http://localhost:5000/newsly-2/us-central1/newsly_questions?polymarket_headline=" + ans))["data"]
+    const questions = (await axios.get("https://newsly-questions-d2wfhntahq-uc.a.run.app?polymarket_headline=" + ans))["data"]
 
     if(questions == "Request failed with status code 404"){
         return res.status(200).send(polymarket_headline + " is not a event from polymarket, please enter a different headline from polymarket")
     }
     let quests = ""
     for(let i = 0; i != questions.length; i++){
-        quests += i.toString() + ". " + questions[i][2] + "\n\n"
+        quests += i.toString() + ". " + questions[i]["question"] + "\n\n"
     }
 
-    const searches = (await axios.get("http://localhost:5000/newsly-2/us-central1/newsly_searches?polymarket_headline=" + ans))["data"]
+    const searches = (await axios.get("https://newsly-searches-d2wfhntahq-uc.a.run.app?polymarket_headline=" + ans))["data"]
 
     const response = openai.chat.completions.create({
-        model: "gpt-5",
-        reasoning_effort: "medium", 
+        model: "gpt-4.1",
         messages: [
             {
                 role: "system", 
-                content: "you are a analyzer that ranks polymarket event questions from most to least likely (0 = never, 10 = guaranted).\n google searches: " + searches[0] + "\nbrave searches: " + searches[1] + "\nperplexity searches: " + searches[2] 
+                content: "you are a analyzer that ranks polymarket event questions from most to least likely (0 = never, 10 = guaranted).\n google searches: " + searches["google"] + "\nbrave searches: " + searches["brave"] + "\nperplexity searches: " + searches["perplexity"] 
             },
             {
                 role: "user", 
