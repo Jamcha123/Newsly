@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Newsly takes a Polymarket event URL and it tells you the likelihood of all the polymarket event questions happening, you can also choose between 5 different gemini models">
+    <meta title="Newsly - Analyze Polymarket" name="Newsly" content="Newsly Analyzes Polymarket Events Using Polymarket's API and Gemini API to get the most likely likelihood of every question">
+    <link rel="icon" type="image/x-icon" href="/public/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsly - Analyze Polymarket</title>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcepS8sAAAAAFKruEPVSFQLZ7aUYDvVGUG0q-vZ"></script>
+    <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.enterprise.ready(async () => {
+          const token = await grecaptcha.enterprise.execute('6LcepS8sAAAAAFKruEPVSFQLZ7aUYDvVGUG0q-vZ', {action: 'LOGIN'});
+        });
+      }
+    </script>
+  </head>
+  <body class="bg-linear-60 from-slate-600 via-slate-400 to-slate-200">
+    <div className="relative w-full h-screen m-auto p-0 bg-transparent " id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

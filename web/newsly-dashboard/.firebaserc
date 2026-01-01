@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "newsly-2",
-    "home": "newsly-2"
+    "home": "newsly-2",
+    "default": "newsly-2"
   },
   "targets": {},
   "etags": {}
