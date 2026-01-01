@@ -13,13 +13,4 @@ Newsly uses several search engines:
 
 Then OpenAI GPT-4.1 model compiles all the data and lists the outcomes (you inputed) from least to most likely using the search results.
 
-types of APIs:
-
-   1. Free API for summarizing news
-
-   2. Basic API for finding every person mentioned in the news stories, $0.10/request
-
-   3. Pro API for ranking outcomes based on likelihood,$0.20/request
-
-
 Disclaimer: Newsly cannot predict perfectly and should NOT be used for betting or gambling 
